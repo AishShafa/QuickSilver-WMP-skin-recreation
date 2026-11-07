@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--
+  QUICKSILVER – Windows Media Player 9 Series skin, rebuilt for the web.
+  This version uses the ORIGINAL skin artwork (extracted from QuickSilver.wmz)
+  and the original element coordinates from the skin's definition file.
+
+  FILES
+    index.html  – structure (this file)
+    style.css   – positions every piece of artwork at its original coordinates
+    script.js   – playback, shutter animation and the PLAYLIST you edit
+    skin/       – the converted artwork (PNG/GIF). Keep this folder next to the page.
+
+  ADDING MUSIC
+    1. Put .mp3 files in a "music" folder next to this file and add a line to the
+       PLAYLIST array at the top of script.js.
+    2. Or click the FOLDER button on the ring to choose MP3s from your computer
+       (they last until the page is reloaded).
+
+  The stage is 500 x 220 px; each element's left/top below matches the original skin.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quicksilver – Windows Media Player 9 Series</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="stage" id="player" aria-label="Quicksilver media player">
+
+  <!-- Base plate: silver body, black bezel and the round control ring -->
+  <img class="base" src="skin/base.png" alt="" draggable="false">
+
+  <!-- Blue glass display, covered by the animated shutter (closed = "Windows Media Player 9 Series") -->
+  <img class="glass" src="skin/shutterbg.png" alt="" draggable="false">
+  <canvas class="vis" id="vis" width="262" height="49" aria-hidden="true"></canvas>
+  <img class="shutter" id="shutter" src="skin/shutter00.png" alt="" draggable="false">
+  <img class="cover" src="skin/coverbottom.png" alt="" draggable="false">
+
+  <!-- Track info overlay (visible while the shutter is open) -->
+  <div class="meta" id="meta" aria-live="polite">
+    <span class="m-title"  id="m-title"></span>
+    <span class="m-artist" id="m-artist"></span>
+    <span class="m-time"   id="m-time">0:00</span>
+  </div>
+
+  <!-- Volume row: mute, volume slider, seek slider -->
+  <button class="btn mute" id="btn-mute" title="Mute" aria-label="Mute"></button>
+  <input class="slider volume" id="volume" type="range" min="0" max="100" value="80" title="Volume" aria-label="Volume">
+  <input class="slider seek"   id="seek"   type="range" min="0" max="1000" value="0" title="Seek" aria-label="Seek">
+
+  <!-- Ring buttons: open (top), previous (left), next (right), stop (bottom) -->
+  <button class="btn open" id="btn-open" title="Open Media File" aria-label="Open media file"></button>
+  <button class="btn prev" id="btn-prev" title="Previous" aria-label="Previous"></button>
+  <button class="btn next" id="btn-next" title="Next" aria-label="Next"></button>
+  <button class="btn stop" id="btn-stop" title="Stop" aria-label="Stop"></button>
+
+  <!-- Big glass play/pause button (round, clipped with the original mask) -->
+  <button class="glassbtn" id="btn-play" title="Play" aria-label="Play"></button>
+
+  <!-- Windows logo (decorative) -->
+  <img class="logo" src="skin/winlogo.png" alt="" draggable="false">
+
+  <!-- Three stacked buttons on the right edge: playlist / repeat / visualization -->
+  <div class="stack">
+    <button class="z z1" id="btn-pl"  title="Show Playlist"       aria-label="Playlist"></button>
+    <button class="z z2" id="btn-rep" title="Repeat"              aria-label="Repeat"></button>
+    <button class="z z3" id="btn-vis" title="Show Visualizations" aria-label="Visualization"></button>
+  </div>
+
+  <!-- Shutter toggle (the little eye under the ring) -->
+  <button class="btn eye" id="btn-shutter" title="Open/Close Shutter" aria-label="Toggle shutter"></button>
+
+  <!-- Playlist drawer (click a song to play it) -->
+  <ol class="drawer" id="drawer" hidden></ol>
+
+  <input type="file" id="file-input" accept="audio/mpeg,audio/*,.mp3" multiple hidden>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
