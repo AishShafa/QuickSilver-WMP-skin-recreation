@@ -2,7 +2,8 @@
 
 This project is a browser-based recreation of the classic Windows Media Player 9 Series "Quicksilver" skin, rebuilt with HTML, CSS, and JavaScript.
 It is inspired by the original Quicksilver skin and artwork from WMPGoodies, with the layout and styling adapted for a modern web page.
-![Uploading image.png…]()
+![Uploading Screenshot.png…]()
+
 
 
 ## Features
