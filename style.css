@@ -1,0 +1,100 @@
+/* ==========================================================================
+   QUICKSILVER – layout and states
+   The stage is 500 x 220 px. Every control uses its ORIGINAL artwork and the
+   left/top values from the skin's definition (the base plate sits at y=26 in
+   the original, so all tops below are shifted up by 26 -> "top - 26").
+
+   CONTENTS
+     1. Page / stage        4. Sliders
+     2. Artwork layers      5. Glass play button
+     3. Plain image buttons 6. Side stack, drawer, a11y
+   ========================================================================== */
+
+/* ---------- 1. PAGE / STAGE ---------- */
+:root { --zoom: 1; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #e4e4e4;
+       font-family: Tahoma, Verdana, sans-serif; overflow: hidden; }
+.stage { position: relative; width: 500px; height: 220px; zoom: var(--zoom); user-select: none; -webkit-user-select: none; }
+.stage > * { position: absolute; }
+img { display: block; pointer-events: none; }
+button { padding: 0; border: 0; background: transparent no-repeat 0 0; cursor: pointer; }
+
+/* ---------- 2. ARTWORK LAYERS ---------- */
+.base    { left: 0;   top: 0;   z-index: 1; }
+.glass   { left: 130px; top: 59px; z-index: 2; }       /* blue glass (original 130,85) */
+.vis     { left: 154px; top: 64px; z-index: 3; display: none; opacity: .8; }  /* visualization canvas */
+.shutter { left: 130px; top: 59px; z-index: 5; }       /* animated shutter, same spot */
+.cover   { left: 130px; top: 115px; z-index: 6; }      /* bottom lip over the shutter (141) */
+.logo    { left: 104px; top: 11px; z-index: 2; }       /* Windows logo (37) */
+
+/* Track text over the glass (original meta area at 154,90, 262x49) */
+.meta { left: 154px; top: 64px; width: 262px; height: 49px; z-index: 7; opacity: 0; transition: opacity .25s;
+        background: url(skin/metadisplay.png); pointer-events: none; color: #fff;
+        font: 700 11px/14px Tahoma, Verdana, sans-serif; text-shadow: 0 1px 1px rgba(0,30,80,.7); }
+.stage.open .meta { opacity: 1; }
+.m-title, .m-artist { position: absolute; left: 10px; width: 195px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.m-title  { top: 8px; }
+.m-artist { top: 24px; font-weight: 400; font-size: 10px; }
+.m-time   { position: absolute; left: 208px; top: 26px; width: 50px; text-align: center; font-size: 12px; }
+
+/* ---------- 3. PLAIN IMAGE BUTTONS (normal / hover / pressed) ---------- */
+.btn { z-index: 8; }
+.open { left: 71px; top: 29px;  width: 35px; height: 25px; background-image: url(skin/openbutton.png); }
+.open:hover { background-image: url(skin/openbutton-ho.png); }  .open:active { background-image: url(skin/openbutton-dn.png); }
+.prev { left: 27px; top: 74px;  width: 23px; height: 35px; background-image: url(skin/prevbutton.png); }
+.prev:hover { background-image: url(skin/prevbutton-ho.png); }  .prev:active { background-image: url(skin/prevbutton-dn.png); }
+.next { left: 127px; top: 73px; width: 23px; height: 35px; background-image: url(skin/nextbutton.png); }
+.next:hover { background-image: url(skin/nextbutton-ho.png); }  .next:active { background-image: url(skin/nextbutton-dn.png); }
+.stop { left: 71px; top: 130px; width: 35px; height: 24px; background-image: url(skin/stopbutton.png); }
+.stop:hover { background-image: url(skin/stopbutton-ho.png); }  .stop:active { background-image: url(skin/stopbutton-dn.png); }
+.eye  { left: 96px; top: 155px; width: 29px; height: 18px; background-image: url(skin/shutterbutton.png); }
+.eye:hover { background-image: url(skin/shutterbutton-ho.png); } .eye:active { background-image: url(skin/shutterbutton-dn.png); }
+.mute { left: 149px; top: 120px; width: 21px; height: 19px; background-image: url(skin/mute.png); }
+.mute:hover { background-image: url(skin/mute-ho.png); }
+.mute:active, .mute.on { background-image: url(skin/mute-dn.png); }   /* "on" = muted (sticky) */
+
+/* ---------- 4. SLIDERS (original Slider.gif rail + Knob.gif thumb) ---------- */
+.slider { z-index: 8; height: 10px; width: 92px; margin: 0; background: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
+.volume { left: 174px; top: 124px; }   /* original 174,150 */
+.seek   { left: 302px; top: 124px; }   /* original 302,150 */
+.slider::-webkit-slider-runnable-track { height: 10px; background: url(skin/slider.png); }
+.slider::-moz-range-track              { height: 10px; background: url(skin/slider.png); }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 9px; background: url(skin/knob.png); border: 0; margin-top: 0; }
+.slider::-moz-range-thumb     { width: 10px; height: 9px; background: url(skin/knob.png); border: 0; border-radius: 0; }
+.slider:hover::-webkit-slider-thumb { background-image: url(skin/knob-ho.png); }
+.slider:hover::-moz-range-thumb     { background-image: url(skin/knob-ho.png); }
+
+/* ---------- 5. GLASS PLAY / PAUSE BUTTON ---------- */
+/* 90x90 button clipped to a circle by the original mask. The "playing" class swaps to the pause artwork. */
+.glassbtn {
+  left: 43px; top: 47px; width: 90px; height: 90px; z-index: 8;
+  background-image: url(skin/playbutton2.png);
+  -webkit-mask: url(skin/pausemask.png) center / 90px 90px no-repeat; mask: url(skin/pausemask.png) center / 90px 90px no-repeat;
+}
+.glassbtn:hover  { background-image: url(skin/playbuttonhover2.gif); }       /* animated glow */
+.glassbtn:active { background-image: url(skin/playbuttondown.png); }
+.playing .glassbtn { background-image: url(skin/pausebutton2.png); }
+.playing .glassbtn:hover  { background-image: url(skin/pausebuttonhover.gif); }
+.playing .glassbtn:active { background-image: url(skin/pausebuttondown.png); }
+
+/* ---------- 6. SIDE STACK, DRAWER, ACCESSIBILITY ---------- */
+/* Three buttons share one 26x41 image; each zone shows its own slice of the hover/pressed artwork. */
+.stack { left: 422px; top: 65px; width: 26px; height: 41px; z-index: 8; background: url(skin/pleqvis.png); }
+.z { position: absolute; left: 0; width: 26px; background-image: none; }
+.z1 { top: 0;  height: 14px; --y: 0; }
+.z2 { top: 14px; height: 13px; --y: -14px; }
+.z3 { top: 27px; height: 14px; --y: -27px; }
+.z:hover  { background: url(skin/pleqvis-ho.png) 0 var(--y) no-repeat; }
+.z:active, .z.on { background: url(skin/pleqvis-dn.png) 0 var(--y) no-repeat; }  /* "on" = toggled */
+
+/* Playlist drawer: simple silver list under the player */
+.drawer { left: 130px; top: 190px; width: 292px; max-height: 140px; margin: 0; padding: 4px 0 4px 26px; overflow: auto; z-index: 9;
+          list-style: decimal; font: 11px/18px Tahoma, Verdana, sans-serif; color: #223; border: 1px solid #5a6066; border-radius: 6px;
+          background: linear-gradient(#f6f8fa, #c3cad0); box-shadow: 0 4px 8px rgba(0,0,0,.3); }
+.drawer[hidden] { display: none; }
+.drawer li { padding: 0 8px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.drawer li:hover { background: #bcd4ee; }  .drawer li.now { font-weight: 700; color: #0b3d80; }
+.drawer .empty { cursor: default; list-style: none; margin-left: -18px; color: #556; }
+
+button:focus-visible, .slider:focus-visible { outline: 2px solid #ffb300; outline-offset: 1px; }
